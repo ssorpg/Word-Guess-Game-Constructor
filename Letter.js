@@ -1,14 +1,15 @@
 CheckGuess = function (guess) {
     if (this.SecretLetter === guess) {
-        this.IsGuessed = true;
+        this.DisplayLetter = this.SecretLetter;
+        return true;
     }
+    return false;
 }
 
 Letter = function (SecretLetter) {
     let letter = {
         SecretLetter: SecretLetter,
         DisplayLetter: '_',
-        IsGuessed: false,
         CheckGuess: CheckGuess
     }
 
