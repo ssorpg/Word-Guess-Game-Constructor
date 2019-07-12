@@ -1,5 +1,8 @@
-const word = require('./Word');
+const makeWord = require('./Word');
+const makeWinLoss = require('./WinLossCount');
 const inquirer = require('inquirer');
+
+var WinLossCount = new makeWinLoss.WinLossCount();
 
 function getGuess(wordToGuess) {
     console.log('');
@@ -21,7 +24,7 @@ function getGuess(wordToGuess) {
             .then(input => {
                 console.log('\n\n\n\n\n');
                 wordToGuess.CheckGuess(input.guess);
-                wordToGuess.PrintCurrentState();
+                wordToGuess.PrintGameStatus();
                 getGuess(wordToGuess);
             });
     }
@@ -34,16 +37,42 @@ function getGuess(wordToGuess) {
 function gameOver(wordToGuess, result) {
     if (result === 'lose') {
         console.log('You\'ve run out of guesses.');
+        console.log('The word was: ' + wordToGuess.SecretWord);
+        WinLossCount.Losses++;
     }
     else if (result === 'win') {
-        console.log('You guessed the word!')
+        console.log('You guessed the word!');
+        WinLossCount.Wins++;
     }
 
-    console.log('The word was: ' + wordToGuess.SecretWord);
+    playAgain();
+}
+
+function playAgain() {
+    console.log('');
+
+    inquirer
+        .prompt([
+            {
+                name: 'restart',
+                type: 'confirm',
+                message: 'Play again?'
+            }
+        ])
+        .then(input => {
+            if (input.restart) {
+                init();
+            }
+            else {
+                WinLossCount.PrintStats();
+            }
+        });
 }
 
 function init() {
-    let wordToGuess = new word.Word();
+    console.log('\n\n\n\n\n');
+
+    let wordToGuess = new makeWord.Word();
 
     getGuess(wordToGuess);
 }

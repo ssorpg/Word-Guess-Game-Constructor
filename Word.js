@@ -1,20 +1,20 @@
-const letterConstructer = require('./Letter.js');
+const makeLetter = require('./Letter.js');
+const randomWords = require('random-words');
 
-function WordSetup() {
-    const words = ['rest', 'muscle', 'taste', 'chalk', 'share', 'door', 'curvy', 'upset', 'leg', 'spotty', 'stingy', 'argue'];
+function WordSetup(Word) {
+    Word.SecretWord = randomWords();
+    Word.GuessesRemaining = Math.max(14 - Word.SecretWord.length, 8);
 
-    this.SecretWord = words[Math.floor(Math.random() * words.length)];
-    this.GuessesRemaining = this.SecretWord.length * 2;
-
-    this.CreateLetters();
-    this.SetDisplayWord();
+    CreateLetters(Word);
+    Word.SetDisplayWord();
+    Word.PrintGameStatus();
 }
 
-function CreateLetters() {
-    for (let position = 0; position < this.SecretWord.length; position++) {
-        const letter = this.SecretWord[position];
+function CreateLetters(Word) {
+    for (let position = 0; position < Word.SecretWord.length; position++) {
+        const letter = Word.SecretWord[position];
 
-        this.Letters.push(new letterConstructer.Letter(letter));
+        Word.Letters.push(new makeLetter.Letter(letter));
     }
 }
 
@@ -28,7 +28,7 @@ function SetDisplayWord() {
 
 function CheckGuess(guess) {
     if (this.LettersGuessed.includes(guess)) {
-        console.log('\nYou\'ve already guessed that letter.');
+        console.log('\nYou\'ve already guessed \'' + guess + '\'.');
         return;
     }
     if (guess.length !== 1 || !guess.match(/[a-z]/i)) {
@@ -36,13 +36,11 @@ function CheckGuess(guess) {
         return;
     }
 
-    let found;
-
     this.Letters.forEach(letter => {
-        found = letter.CheckGuess(guess);
+        letter.CheckGuess(guess);
     });
 
-    if (!found) {
+    if (!this.SecretWord.includes(guess)) {
         this.GuessesRemaining--;
     }
 
@@ -50,7 +48,7 @@ function CheckGuess(guess) {
     this.SetDisplayWord();
 }
 
-function PrintCurrentState() {
+function PrintGameStatus() {
     console.log('\nLetters guessed: ' + this.LettersGuessed.join(', '));
     console.log('\nGuesses remaining: ' + this.GuessesRemaining);
     console.log('\n' + this.DisplayWord.split('').join(' '));
@@ -64,14 +62,12 @@ function Word() {
         GuessesRemaining: 0,
         Letters: [],
 
-        WordSetup: WordSetup,
-        CreateLetters: CreateLetters,
         SetDisplayWord: SetDisplayWord,
         CheckGuess: CheckGuess,
-        PrintCurrentState: PrintCurrentState
+        PrintGameStatus: PrintGameStatus
     }
 
-    word.WordSetup();
+    WordSetup(word);
     return word;
 }
 

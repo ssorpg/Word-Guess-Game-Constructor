@@ -1,9 +1,7 @@
 CheckGuess = function (guess) {
     if (this.SecretLetter === guess) {
         this.DisplayLetter = this.SecretLetter;
-        return true;
     }
-    return false;
 }
 
 Letter = function (SecretLetter) {
