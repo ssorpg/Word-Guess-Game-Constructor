@@ -3,7 +3,7 @@ const randomWords = require('random-words');
 
 function WordSetup(Word) {
     Word.SecretWord = randomWords();
-    Word.GuessesRemaining = Math.max(14 - Word.SecretWord.length, 8);
+    Word.GuessesRemaining = Math.max(16 - Word.SecretWord.length, 8);
 
     CreateLetters(Word);
     Word.SetDisplayWord();
