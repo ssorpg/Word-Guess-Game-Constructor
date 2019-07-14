@@ -1,6 +1,8 @@
 const makeWord = require('./Word');
 const makeWinLoss = require('./WinLossCount');
+
 const inquirer = require('inquirer');
+const randomWords = require('random-words');
 
 var WinLossCount = new makeWinLoss.WinLossCount();
 
@@ -72,7 +74,7 @@ function playAgain() {
 function init() {
     console.log('\n\n\n\n\n');
 
-    let wordToGuess = new makeWord.Word();
+    let wordToGuess = new makeWord.Word(randomWords());
 
     getGuess(wordToGuess);
 }

@@ -1,8 +1,6 @@
 const makeLetter = require('./Letter.js');
-const randomWords = require('random-words');
 
 function WordSetup(Word) {
-    Word.SecretWord = randomWords();
     Word.GuessesRemaining = Math.max(16 - Word.SecretWord.length, 8);
 
     CreateLetters(Word);
@@ -54,9 +52,9 @@ function PrintGameStatus() {
     console.log('\n' + this.DisplayWord.split('').join(' '));
 }
 
-function Word() {
+function Word(SecretWord) {
     let word = {
-        SecretWord: '',
+        SecretWord: SecretWord,
         DisplayWord: '',
         LettersGuessed: [],
         GuessesRemaining: 0,
