@@ -1,20 +1,22 @@
+// REQUIRES
 const makeLetter = require('./Letter.js');
-const randomWords = require('random-words');
 
-function WordSetup(Word) {
-    Word.SecretWord = randomWords();
-    Word.GuessesRemaining = Math.max(14 - Word.SecretWord.length, 8);
 
-    CreateLetters(Word);
-    Word.SetDisplayWord();
-    Word.PrintGameStatus();
+
+// FUNCTIONS
+function wordSetup(word) {
+    word.CreateLetters();
+    word.SetDisplayWord();
 }
 
-function CreateLetters(Word) {
-    for (let position = 0; position < Word.SecretWord.length; position++) {
-        const letter = Word.SecretWord[position];
 
-        Word.Letters.push(new makeLetter.Letter(letter));
+
+// METHODS
+function CreateLetters() {
+    for (let position = 0; position < this.SecretWord.length; position++) {
+        const letter = this.SecretWord[position];
+
+        this.Letters.push(new makeLetter.Letter(letter));
     }
 }
 
@@ -26,51 +28,26 @@ function SetDisplayWord() {
     });
 }
 
-function CheckGuess(guess) {
-    if (this.LettersGuessed.includes(guess)) {
-        console.log('\nYou\'ve already guessed \'' + guess + '\'.');
-        return;
-    }
-    if (guess.length !== 1 || !guess.match(/[a-z]/i)) {
-        console.log('\nPlease guess a valid letter.');
-        return;
-    }
 
-    this.Letters.forEach(letter => {
-        letter.CheckGuess(guess);
-    });
 
-    if (!this.SecretWord.includes(guess)) {
-        this.GuessesRemaining--;
-    }
-
-    this.LettersGuessed.push(guess);
-    this.SetDisplayWord();
-}
-
-function PrintGameStatus() {
-    console.log('\nLetters guessed: ' + this.LettersGuessed.join(', '));
-    console.log('\nGuesses remaining: ' + this.GuessesRemaining);
-    console.log('\n' + this.DisplayWord.split('').join(' '));
-}
-
-function Word() {
+// CONSTRUCTORS
+function Word(Word) {
     let word = {
-        SecretWord: '',
+        SecretWord: Word,
         DisplayWord: '',
-        LettersGuessed: [],
-        GuessesRemaining: 0,
         Letters: [],
 
-        SetDisplayWord: SetDisplayWord,
-        CheckGuess: CheckGuess,
-        PrintGameStatus: PrintGameStatus
-    }
+        CreateLetters: CreateLetters,
+        SetDisplayWord: SetDisplayWord
+    };
 
-    WordSetup(word);
+    wordSetup(word);
     return word;
 }
 
+
+
+// EXPORTS
 module.exports = {
     Word: Word
-}
+};

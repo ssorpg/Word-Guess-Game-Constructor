@@ -1,18 +1,32 @@
-const makeWord = require('./Word');
-const makeWinLoss = require('./WinLossCount');
-const inquirer = require('inquirer');
+// REQUIRES
+const makeGame = require('./Game.js');
+const makeWinLoss = require('./WinLossCount.js');
 
+const inquirer = require('inquirer');
+const randomWords = require('random-words');
+
+
+
+// GLOBALS
+const largeSpace = '\n\n\n\n\n';
 var WinLossCount = new makeWinLoss.WinLossCount();
 
-function getGuess(wordToGuess) {
+
+
+// FUNCTIONS
+function getGuess(game) {
     console.log('');
 
-    if (wordToGuess.GuessesRemaining < 1) {
-        gameOver(wordToGuess, 'lose');
+    if (game.GuessesRemaining < 1) {
+        gameOver(game, 'lose');
         return;
     }
 
-    if (wordToGuess.DisplayWord !== wordToGuess.SecretWord) {
+    if (game.WordToGuess.DisplayWord === game.WordToGuess.SecretWord) {
+        gameOver(game, 'win');
+        return;
+    }
+    else {
         inquirer
             .prompt([
                 {
@@ -22,22 +36,18 @@ function getGuess(wordToGuess) {
                 }
             ])
             .then(input => {
-                console.log('\n\n\n\n\n');
-                wordToGuess.CheckGuess(input.guess);
-                wordToGuess.PrintGameStatus();
-                getGuess(wordToGuess);
+                console.log(largeSpace);
+                game.CheckGuess(input.guess.toLowerCase());
+                game.PrintGameStatus();
+                getGuess(game);
             });
-    }
-    else {
-        gameOver(wordToGuess, 'win');
-        return;
     }
 }
 
-function gameOver(wordToGuess, result) {
+function gameOver(game, result) {
     if (result === 'lose') {
         console.log('You\'ve run out of guesses.');
-        console.log('The word was: ' + wordToGuess.SecretWord);
+        console.log('The word was: ' + game.WordToGuess.SecretWord);
         WinLossCount.Losses++;
     }
     else if (result === 'win') {
@@ -70,11 +80,14 @@ function playAgain() {
 }
 
 function init() {
-    console.log('\n\n\n\n\n');
+    console.log(largeSpace);
 
-    let wordToGuess = new makeWord.Word();
+    let game = new makeGame.Game(randomWords());
 
-    getGuess(wordToGuess);
+    getGuess(game);
 }
 
+
+
+// FUNCTION CALLS
 init();
