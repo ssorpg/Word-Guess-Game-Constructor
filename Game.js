@@ -17,7 +17,7 @@ function CheckGuess(guess) {
         console.log('\nYou\'ve already guessed \'' + guess + '\'.');
         return;
     }
-    else if (!guess.match(/[a-z]/)) {
+    else if (guess.length > 1 || !guess.match(/[a-z]/)) {
         console.log('\nPlease guess a valid letter.');
         return;
     }
