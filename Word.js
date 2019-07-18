@@ -1,44 +1,44 @@
 // REQUIRES
-const makeLetter = require('./Letter.js');
+const Letter = require('./letter.js');
 
 
 
 // FUNCTIONS
 function wordSetup(word) {
-	word.CreateLetters();
-	word.SetDisplayWord();
+	word.createLetters();
+	word.setDisplayWord();
 }
 
 
 
 // METHODS
-function CreateLetters() {
-	for (let position = 0; position < this.SecretWord.length; position++) {
-		const letter = this.SecretWord[position];
+function createLetters() {
+	for (let position = 0; position < this.secretWord.length; position++) {
+		const letter = this.secretWord[position];
 
-		this.Letters.push(new makeLetter.Letter(letter));
+		this.letters.push(new Letter(letter));
 	}
 }
 
-function SetDisplayWord() {
-	this.DisplayWord = '';
+function setDisplayWord() {
+	this.displayWord = '';
 
-	this.Letters.forEach(letter => {
-		this.DisplayWord += letter.DisplayLetter;
+	this.letters.forEach(letter => {
+		this.displayWord += letter.displayLetter;
 	});
 }
 
 
 
 // CONSTRUCTORS
-function Word(Word) {
+function Word(randWord) {
 	let word = {
-		SecretWord: Word,
-		DisplayWord: '',
-		Letters: [],
+		secretWord: randWord,
+		displayWord: '',
+		letters: [],
 
-		CreateLetters: CreateLetters,
-		SetDisplayWord: SetDisplayWord
+		createLetters: createLetters,
+		setDisplayWord: setDisplayWord
 	};
 
 	wordSetup(word);
@@ -48,6 +48,4 @@ function Word(Word) {
 
 
 // EXPORTS
-module.exports = {
-	Word: Word
-};
+module.exports = Word;

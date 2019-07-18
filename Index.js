@@ -1,6 +1,6 @@
 // REQUIRES
-const makeGame = require('./Game.js');
-const makeWinLoss = require('./WinLossCount.js');
+const Game = require('./game.js');
+const WinLossCount = require('./WinLossCount.js');
 
 const inquirer = require('inquirer');
 const randomWords = require('random-words');
@@ -9,7 +9,7 @@ const randomWords = require('random-words');
 
 // GLOBALS
 const largeSpace = '\n\n\n\n\n';
-var WinLossCount = new makeWinLoss.WinLossCount();
+var winLossCount = new WinLossCount();
 
 
 
@@ -17,42 +17,41 @@ var WinLossCount = new makeWinLoss.WinLossCount();
 function getGuess(game) {
 	console.log('');
 
-	if (game.GuessesRemaining < 1) {
+	if (game.guessesRemaining < 1) {
 		gameOver(game, 'lose');
 		return;
 	}
-
-	if (game.WordToGuess.DisplayWord === game.WordToGuess.SecretWord) {
+	else if (game.wordToGuess.displayWord === game.wordToGuess.secretWord) {
 		gameOver(game, 'win');
 		return;
 	}
-	else {
-		inquirer
-			.prompt([
-				{
-					name: 'guess',
-					type: 'input',
-					message: 'Guess a letter'
-				}
-			])
-			.then(input => {
-				console.log(largeSpace);
-				game.CheckGuess(input.guess.toLowerCase());
-				game.PrintGameStatus();
-				getGuess(game);
-			});
-	}
+
+	inquirer
+		.prompt([
+			{
+				name: 'guess',
+				type: 'input',
+				message: 'Guess a letter'
+			}
+		])
+		.then(input => {
+			console.log(largeSpace);
+			game.checkGuess(input.guess.toLowerCase());
+			game.printGameStatus();
+			getGuess(game);
+		});
+
 }
 
 function gameOver(game, result) {
 	if (result === 'lose') {
 		console.log('You\'ve run out of guesses.');
-		console.log('The word was: ' + game.WordToGuess.SecretWord);
-		WinLossCount.Losses++;
+		console.log('The word was: ' + game.wordToGuess.secretWord);
+		winLossCount.losses++;
 	}
 	else if (result === 'win') {
 		console.log('You guessed the word!');
-		WinLossCount.Wins++;
+		winLossCount.wins++;
 	}
 
 	playAgain();
@@ -74,7 +73,7 @@ function playAgain() {
 				init();
 			}
 			else {
-				WinLossCount.PrintStats();
+				winLossCount.printStats();
 			}
 		});
 }
@@ -82,7 +81,7 @@ function playAgain() {
 function init() {
 	console.log(largeSpace);
 
-	let game = new makeGame.Game(randomWords());
+	let game = new Game(randomWords());
 
 	getGuess(game);
 }

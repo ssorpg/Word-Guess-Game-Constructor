@@ -1,8 +1,8 @@
 // METHODS
-function PrintStats () {
+function printStats () {
 	console.log('\nGAME OVER');
-	console.log('Wins: ' + this.Wins);
-	console.log('Losses: ' + this.Losses);
+	console.log('Wins: ' + this.wins);
+	console.log('Losses: ' + this.losses);
 }
 
 
@@ -10,10 +10,10 @@ function PrintStats () {
 // CONSTRUCTORS
 function WinLossCount() {
 	let winLossCount = {
-		Wins: 0,
-		Losses: 0,
+		wins: 0,
+		losses: 0,
 
-		PrintStats: PrintStats
+		printStats: printStats
 	};
 
 	return winLossCount;
@@ -22,6 +22,4 @@ function WinLossCount() {
 
 
 // EXPORTS
-module.exports = {
-	WinLossCount: WinLossCount
-};
+module.exports = WinLossCount;

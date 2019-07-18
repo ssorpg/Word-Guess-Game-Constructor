@@ -1,18 +1,19 @@
 // METHODS
-function CheckGuess(guess) {
-	if (this.SecretLetter === guess) {
-		this.DisplayLetter = this.SecretLetter;
+function checkGuess(guess) {
+	if (this.secretLetter === guess) {
+		this.displayLetter = this.secretLetter;
 	}
 }
 
 
 
 // CONSTRUCTORS
-function Letter(SecretLetter) {
+function Letter(secretLetter) {
 	let letter = {
-		SecretLetter: SecretLetter,
-		DisplayLetter: '_',
-		CheckGuess: CheckGuess
+		secretLetter: secretLetter,
+		displayLetter: '_',
+		
+		checkGuess: checkGuess
 	};
 
 	return letter;
@@ -21,6 +22,4 @@ function Letter(SecretLetter) {
 
 
 // EXPORTS
-module.exports = {
-	Letter: Letter
-};
+module.exports = Letter;

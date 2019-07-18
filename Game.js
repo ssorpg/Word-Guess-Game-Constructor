@@ -1,19 +1,19 @@
 // REQUIRES
-const makeWord = require('./Word.js');
+const Word = require('./word.js');
 
 
 
 // FUNCTIONS
 function gameSetup(game) {
-	game.GuessesRemaining = Math.max(14 - game.WordToGuess.SecretWord.length, 8);
-	game.PrintGameStatus();
+	game.guessesRemaining = Math.max(14 - game.wordToGuess.secretWord.length, 8);
+	game.printGameStatus();
 }
 
 
 
 // METHODS
-function CheckGuess(guess) {
-	if (this.LettersGuessed.includes(guess)) {
+function checkGuess(guess) {
+	if (this.lettersGuessed.includes(guess)) {
 		console.log('\nYou\'ve already guessed \'' + guess + '\'.');
 		return;
 	}
@@ -22,35 +22,35 @@ function CheckGuess(guess) {
 		return;
 	}
 
-	this.WordToGuess.Letters.forEach(letter => {
-		letter.CheckGuess(guess);
+	this.wordToGuess.letters.forEach(letter => {
+		letter.checkGuess(guess);
 	});
 
-	if (!this.WordToGuess.SecretWord.includes(guess)) {
-		this.GuessesRemaining--;
+	if (!this.wordToGuess.secretWord.includes(guess)) {
+		this.guessesRemaining--;
 	}
 
-	this.LettersGuessed.push(guess);
-	this.WordToGuess.SetDisplayWord();
+	this.lettersGuessed.push(guess);
+	this.wordToGuess.setDisplayWord();
 }
 
-function PrintGameStatus() {
-	console.log('\nLetters guessed: ' + this.LettersGuessed.join(', '));
-	console.log('\nGuesses remaining: ' + this.GuessesRemaining);
-	console.log('\n' + this.WordToGuess.DisplayWord.split('').join(' '));
+function printGameStatus() {
+	console.log('\nLetters guessed: ' + this.lettersGuessed.join(', '));
+	console.log('\nGuesses remaining: ' + this.guessesRemaining);
+	console.log('\n' + this.wordToGuess.displayWord.split('').join(' '));
 }
 
 
 
 // CONSTRUCTORS
-function Game(Word) {
+function Game(randWord) {
 	let game = {
-		WordToGuess: new makeWord.Word(Word),
-		LettersGuessed: [],
-		GuessesRemaining: 8,
+		wordToGuess: new Word(randWord),
+		lettersGuessed: [],
+		guessesRemaining: 8,
 
-		CheckGuess: CheckGuess,
-		PrintGameStatus: PrintGameStatus
+		checkGuess: checkGuess,
+		printGameStatus: printGameStatus
 	};
 
 	gameSetup(game);
@@ -60,6 +60,4 @@ function Game(Word) {
 
 
 // EXPORTS
-module.exports = {
-	Game: Game
-};
+module.exports = Game;
